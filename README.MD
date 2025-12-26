@@ -1,4 +1,4 @@
-# Backend Engine (Python)
+# Backtesting Engine (Python)
 
 A modular, event-driven backtesting framework designed to simulate trading strategies with a focus on architectural robustness. It decouples strategy logic from execution, enabling the simulation of multi-asset portfolios under realistic market conditions.
 
@@ -23,6 +23,9 @@ The engine includes a reporting module that generates a **synthetic one-pager** 
 
 * **Pairs Trading:** Statistical arbitrage based on cointegration (Rolling OLS).
 * **SMA Cross:** Standard trend-following logic using moving average crossovers.
+
+Pairs Trading Strategy Report:
+![Pairs Trading Strategy Report](img/pairs_trading_report.png)
 
 ### Limitations & Future Work
 
