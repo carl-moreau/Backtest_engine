@@ -1,25 +1,35 @@
-# Quantitative Backtesting Engine (Python)
+# Backend Engine (Python)
 
-An event-driven, object-oriented backtesting framework designed to simulate trading strategies with a focus on architectural robustness and realistic market frictions.
+A modular, event-driven backtesting framework designed to simulate trading strategies with a focus on architectural robustness. It decouples strategy logic from execution, enabling the simulation of multi-asset portfolios under realistic market conditions.
 
-This project was built as an educational initiative to bridge the gap between academic theory and professional engineering standards, implementing core concepts like **Separation of Concerns (SoC)** and **SOLID** principles.
+### Core Features
 
-## Key Features
+* **N-Asset Architecture:** Unlike vector-based backtesters, this framework uses an event-driven approach. The abstract `Strategy` class is designed to handle N assets simultaneously. The logic isn't tied to a single ticker. The engine passes the entire historical window to the strategy, allowing for complex portfolio optimization.
+* **Fees:** Accounts for transaction costs per trade.
+* **Slippage:** Models execution deviations from theoretical prices.
+* **Integer Constraints:** Automatically converts fractional target weights into integer share counts to reflect real-world position sizing.
 
-* **Event-Driven Architecture:** Simulates the passage of time bar-by-bar to strictly prevent *Look-Ahead Bias*.
-* **Realistic Frictions:**
-    * **Transaction Costs:** Configurable Fee Models (Fixed, Percentage, etc.).
-    * **Slippage Modeling:** Linear price impact simulation based on order size.
-* **Risk Management:**
-    * **Dynamic Sizing:** Allocates positions based on strict capital percentage limits.
-    * **Integer Constraints:** Handles realistic share counts (no fractional shares).
-* **Institutional Reporting:** Generates interactive HTML dashboards (via Plotly) featuring Equity Curves, Drawdown plots, and advanced KPIs (Sortino, Calmar, CAGR).
-* **Strategy Agnostic:** Designed to handle **N-assets**. The engine accepts any strategy inheriting from the abstract base class, whether it's a Single-Asset Trend Following or a Multi-Asset Statistical Arbitrage.
 
-## Architecture
+* **OOP Design:** Enforces a strict separation between Signals Generation (Abstract Strategy Class) and Trade Execution.
 
-The system is decoupled into three main layers:
+### Performance Reporting
 
-1.  **Data Layer:** Handles ingestion and alignment of OHLCV data (MultiIndex Pandas DataFrames).
-2.  **Strategy Layer:** Pure logic components. They receive historical windows ($t_{-N}$ to $t_{-1}$) and output target weights.
-3.  **Portfolio/Execution Layer:** The "Brain". It manages cash, calculates realized P&L (VWAP basis), applies fees/slippage, and tracks exposure.
+The engine includes a reporting module that generates a **synthetic one-pager** for immediate strategy assessment.
+
+* **Consolidated View:** Aggregates PnL, Drawdown, and other metrics into a single dashboard.
+* **Visual Analysis:** Plots equity curves and rolling statistics to visualize strategy behavior over time.
+
+### Implemented Strategies (as examples)
+
+* **Pairs Trading:** Statistical arbitrage based on cointegration (Rolling OLS).
+* **SMA Cross:** Standard trend-following logic using moving average crossovers.
+
+### Limitations & Future Work
+
+As a student project, the current implementation prioritizes architectural clarity over computational speed.
+
+* **Performance**: The row-by-row iteration (event-driven) is computationally expensive compared to vectorized backtesting.
+
+* **Optimization**: Recursive algorithms (e.g., Kalman Filters) should replace repetitive rolling OLS calculations to improve runtime.
+
+* **Data Handling**: Requires a robust layer to handle non-price data and asynchronous data streams.
